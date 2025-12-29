@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>纳斯达克实时数据</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { text-align: center; color: #333; }
+        .chart-box { margin-bottom: 40px; height: 500px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>纳斯达克实时行情监控</h1>
+        
+        <h3>1. 纳斯达克综合指数 (IXIC) 实时走势</h3>
+        <div class="chart-box">
+            <div id="tradingview_index" style="height: 100%;"></div>
+        </div>
+
+        <hr>
+
+        <h3>2. 纳斯达克 100 指数市盈率 (P/E Ratio)</h3>
+        <p style="color: #666;">注：市盈率数据由 TradingView 基本面指标提供</p>
+        <div class="chart-box">
+            <div id="tradingview_pe" style="height: 100%;"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+        // 指数图表
+        new TradingView.widget({
+            "autosize": true,
+            "symbol": "NASDAQ:IXIC",
+            "interval": "D",
+            "timezone": "Asia/Shanghai",
+            "theme": "light",
+            "style": "1",
+            "locale": "zh_CN",
+            "container_id": "tradingview_index"
+        });
+
+        // 市盈率图表 (使用 NDX 加 PE 指标)
+        new TradingView.widget({
+            "autosize": true,
+            "symbol": "NASDAQ:NDX",
+            "interval": "D",
+            "timezone": "Asia/Shanghai",
+            "theme": "light",
+            "style": "1",
+            "locale": "zh_CN",
+            "container_id": "tradingview_pe",
+            "studies": ["STD;Price_To_Earnings_Ratio"]
+        });
+    </script>
+</body>
+</html>
