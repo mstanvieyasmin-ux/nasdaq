@@ -5,27 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>纳斯达克实时监控</title>
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 10px; background-color: #f0f2f5; }
-        .card { background: white; border-radius: 10px; margin-bottom: 20px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h2 { font-size: 16px; margin: 0 0 10px 0; color: #1a73e8; border-left: 4px solid #1a73e8; padding-left: 10px; }
-        .chart-box { height: 450px; width: 100%; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 10px; background-color: #f0f2f5; }
+        .card { background: white; border-radius: 12px; margin-bottom: 20px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { font-size: 16px; margin: 0 0 15px 0; color: #1a73e8; font-weight: 600; display: flex; align-items: center; }
+        h2::before { content: ''; display: inline-block; width: 4px; height: 16px; background: #1a73e8; margin-right: 8px; border-radius: 2px; }
+        .chart-box { height: 400px; width: 100%; }
+        .btn-link { display: block; text-align: center; margin-top: 10px; color: #1a73e8; text-decoration: none; font-size: 14px; padding: 10px; background: #e8f0fe; border-radius: 8px; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>1. 纳斯达克综合指数 (IXIC) 实时价格</h2>
-        <div id="index_chart" class="chart-box"></div>
+        <h2>纳斯达克综合指数 (IXIC)</h2>
+        <div id="chart_index" class="chart-box"></div>
     </div>
 
     <div class="card">
-        <h2>2. 纳斯达克100市盈率 (P/E Ratio) 曲线</h2>
-        <div id="pe_chart" class="chart-box"></div>
+        <h2>纳斯达克 100 核心财务指标</h2>
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
+            {
+            "colorTheme": "light",
+            "isTransparent": true,
+            "largeChartUrl": "",
+            "displayMode": "regular",
+            "width": "100%",
+            "height": "100%",
+            "symbol": "NASDAQ:NDX",
+            "locale": "zh_CN"
+            }
+            </script>
+        </div>
+        <a href="https://sc.macromicro.me/collections/3/us-stock-market/23955/nasdaq-100-pe" target="_blank" class="btn-link">
+            📊 点击查看市盈率 (P/E) 历史走势曲线 &rarr;
+        </a>
     </div>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
-        // 指数价格图表
         new TradingView.widget({
             "autosize": true,
             "symbol": "NASDAQ:IXIC",
@@ -34,28 +52,10 @@
             "theme": "light",
             "style": "1",
             "locale": "zh_CN",
-            "container_id": "index_chart"
-        });
-
-        // 专门显示市盈率的图表（强制加载 PE 模板）
-        new TradingView.widget({
-            "autosize": true,
-            "symbol": "NASDAQ:NDX",
-            "interval": "D",
-            "timezone": "Asia/Shanghai",
-            "theme": "light",
-            "style": "3", 
-            "locale": "zh_CN",
-            "container_id": "pe_chart",
-            "studies": [
-                {
-                    "id": "Price_To_Earnings_Ratio@tv-basicstudies",
-                    "forceOverlay": false // 重点：让它独立显示，不叠加在价格上
-                }
-            ],
-            // 隐藏主价格轴，尝试让指标成为主角
-            "hide_legend": false,
-            "withdateranges": true
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "hide_top_toolbar": false,
+            "container_id": "chart_index"
         });
     </script>
 </body>
