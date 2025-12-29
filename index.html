@@ -3,32 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>纳斯达克实时行情</title>
+    <title>纳斯达克实时看板</title>
     <style>
-        body { font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 20px; background-color: #f0f2f5; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f6f8; margin: 0; padding: 15px; }
         .container { max-width: 800px; margin: 0 auto; }
-        .card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
-        h2 { margin-top: 0; color: #333; font-size: 18px; border-left: 4px solid #0052ff; padding-left: 10px; }
-        .chart-box { height: 500px; width: 100%; }
-        .btn { display: block; text-align: center; background: #0052ff; color: white; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+        
+        /* 卡片设计 */
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 24px; }
+        h2 { margin-top: 0; color: #111; font-size: 18px; border-left: 5px solid #0052ff; padding-left: 12px; display: flex; align-items: center; }
+        
+        .chart-box { height: 450px; width: 100%; }
+        
+        /* 按钮样式组 */
+        .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .btn { 
+            display: block; 
+            text-align: center; 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: opacity 0.2s;
+        }
+        .btn-primary { background: #0052ff; color: white; }
+        .btn-secondary { background: #e8f0fe; color: #0052ff; }
+        .btn:hover { opacity: 0.9; }
+        
+        .note { font-size: 13px; color: #666; background: #fff8e1; padding: 10px; border-radius: 6px; line-height: 1.5; }
     </style>
 </head>
 <body>
     <div class="container">
+        
         <div class="card">
-            <h2>📉 纳斯达克综合指数 (实时走势)</h2>
+            <h2>📉 纳斯达克综合指数 (IXIC)</h2>
             <div id="index_chart" class="chart-box"></div>
         </div>
 
         <div class="card">
-            <h2>📊 纳斯达克市盈率 (P/E)</h2>
-            <p style="color: #666; font-size: 14px;">
-                * 注：市盈率历史曲线属于付费高级数据，无法在免费网页中直接绘制。
-            </p>
-            <a href="https://www.longtermtrends.net/nasdaq-100-pe-ratio/" target="_blank" class="btn">
-                👉 点击此处查看市盈率历史曲线 (专业版)
-            </a>
+            <h2>📊 纳斯达克 100 市盈率 (P/E)</h2>
+            <div class="note">
+                ⚠️ <strong>说明：</strong> 由于全球数据版权限制，免费网页无法直接绘制历史 P/E 曲线。
+                <br>请点击下方蓝色按钮，跳转至<strong>“财经M平方”</strong>查看高清历史图表（无需翻墙）。
+            </div>
+            
+            <div class="btn-group">
+                <a href="https://sc.macromicro.me/collections/3/us-stock-market/23955/nasdaq-100-pe" target="_blank" class="btn btn-primary">
+                    👉 点击查看：纳斯达克 P/E 历史曲线 (推荐)
+                </a>
+                
+                <a href="https://www.ceicdata.com/zh-hans/indicator/united-states/nasdaq-pe-ratio" target="_blank" class="btn btn-secondary">
+                    备用链接：CEIC 数据中心
+                </a>
+            </div>
         </div>
+
     </div>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
