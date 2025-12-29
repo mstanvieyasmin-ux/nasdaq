@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -5,62 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>纳斯达克实时监控</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 10px; background-color: #f0f2f5; }
-        .card { background: white; border-radius: 12px; margin-bottom: 20px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; }
-        h2 { font-size: 16px; margin: 0 0 15px 0; color: #333; border-left: 5px solid #0052ff; padding-left: 10px; }
-        .chart-box { height: 400px; width: 100%; }
-        
-        /* 专门优化嵌入窗口，去掉不必要的边缘 */
-        .iframe-container {
-            width: 100%;
-            height: 600px; /* 增加高度以容纳外部页面 */
-            border: 1px solid #eee;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-        .iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        body { font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 10px; background-color: #f0f2f5; }
+        .card { background: white; border-radius: 12px; margin-bottom: 20px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { font-size: 16px; margin: 0 0 10px 0; color: #333; border-left: 4px solid #0052ff; padding-left: 10px; }
+        .chart-box { height: 450px; width: 100%; }
+        .note { font-size: 12px; color: #666; margin-top: 5px; background: #f8f9fa; padding: 8px; border-radius: 4px; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>1. 纳斯达克综合指数 (IXIC) 实时行情</h2>
+        <h2>1. 纳斯达克综合指数 (IXIC) 实时走势</h2>
         <div id="chart_index" class="chart-box"></div>
     </div>
 
     <div class="card">
-        <h2>2. 纳斯达克 100 市盈率历史曲线</h2>
-        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
-            *注：下方图表直接加载自 MacroMicro 数据源，请在框内向下滑动查看曲线。
-        </p>
-        <div class="iframe-container">
-            <iframe 
-                src="https://sc.macromicro.me/collections/3/us-stock-market/23955/nasdaq-100-pe" 
-                title="Nasdaq PE Chart">
-            </iframe>
+        <h2>2. 纳斯达克 100 市盈率 (P/E Ratio)</h2>
+        <div id="chart_pe" class="chart-box"></div>
+        <div class="note">
+            💡 <strong>小知识：</strong> 由于指数本身无法直接获取免费财务数据，此图表使用 <strong>QQQ (纳斯达克100 ETF)</strong> 的市盈率代替。两者的数值和走势是完全一致的。
         </div>
     </div>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
-        // 渲染第一个图表
+        // 1. 指数价格
         new TradingView.widget({
             "autosize": true,
             "symbol": "NASDAQ:IXIC",
             "interval": "D",
             "timezone": "Asia/Shanghai",
             "theme": "light",
-            "style": "1",
+            "style": "1", // K线图
             "locale": "zh_CN",
-            "toolbar_bg": "#f1f3f6",
-            "enable_publishing": false,
-            "hide_top_toolbar": false,
-            "container_id": "chart_index"
+            "container_id": "chart_index",
+            "hide_top_toolbar": false
+        });
+
+        // 2. 市盈率曲线 (重点修改部分)
+        new TradingView.widget({
+            "autosize": true,
+            "symbol": "NASDAQ:QQQ", // 换成 QQQ 以获取财务数据
+            "interval": "D",
+            "timezone": "Asia/Shanghai",
+            "theme": "light",
+            "style": "3", // 面积图，适合看趋势
+            "locale": "zh_CN",
+            "container_id": "chart_pe",
+            "studies": [
+                {
+                    "id": "Price_To_Earnings_Ratio@tv-basicstudies", // 强制调用 PE 指标
+                    "forceOverlay": false // 独立显示，不和价格重叠
+                }
+            ],
+            // 隐藏多余的按钮，只留纯净的曲线
+            "hide_top_toolbar": true, 
+            "hide_legend": false,
+            "allow_symbol_change": false
         });
     </script>
 </body>
