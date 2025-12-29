@@ -5,45 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>纳斯达克实时监控</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 10px; background-color: #f0f2f5; }
-        .card { background: white; border-radius: 12px; margin-bottom: 20px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { font-size: 16px; margin: 0 0 15px 0; color: #1a73e8; font-weight: 600; display: flex; align-items: center; }
-        h2::before { content: ''; display: inline-block; width: 4px; height: 16px; background: #1a73e8; margin-right: 8px; border-radius: 2px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 10px; background-color: #f0f2f5; }
+        .card { background: white; border-radius: 12px; margin-bottom: 20px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; }
+        h2 { font-size: 16px; margin: 0 0 15px 0; color: #333; border-left: 5px solid #0052ff; padding-left: 10px; }
         .chart-box { height: 400px; width: 100%; }
-        .btn-link { display: block; text-align: center; margin-top: 10px; color: #1a73e8; text-decoration: none; font-size: 14px; padding: 10px; background: #e8f0fe; border-radius: 8px; }
+        
+        /* 专门优化嵌入窗口，去掉不必要的边缘 */
+        .iframe-container {
+            width: 100%;
+            height: 600px; /* 增加高度以容纳外部页面 */
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>纳斯达克综合指数 (IXIC)</h2>
+        <h2>1. 纳斯达克综合指数 (IXIC) 实时行情</h2>
         <div id="chart_index" class="chart-box"></div>
     </div>
 
     <div class="card">
-        <h2>纳斯达克 100 核心财务指标</h2>
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
-            {
-            "colorTheme": "light",
-            "isTransparent": true,
-            "largeChartUrl": "",
-            "displayMode": "regular",
-            "width": "100%",
-            "height": "100%",
-            "symbol": "NASDAQ:NDX",
-            "locale": "zh_CN"
-            }
-            </script>
+        <h2>2. 纳斯达克 100 市盈率历史曲线</h2>
+        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+            *注：下方图表直接加载自 MacroMicro 数据源，请在框内向下滑动查看曲线。
+        </p>
+        <div class="iframe-container">
+            <iframe 
+                src="https://sc.macromicro.me/collections/3/us-stock-market/23955/nasdaq-100-pe" 
+                title="Nasdaq PE Chart">
+            </iframe>
         </div>
-        <a href="https://sc.macromicro.me/collections/3/us-stock-market/23955/nasdaq-100-pe" target="_blank" class="btn-link">
-            📊 点击查看市盈率 (P/E) 历史走势曲线 &rarr;
-        </a>
     </div>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
+        // 渲染第一个图表
         new TradingView.widget({
             "autosize": true,
             "symbol": "NASDAQ:IXIC",
