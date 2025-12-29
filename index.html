@@ -3,97 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>纳斯达克实时看板</title>
+    <title>纳斯达克实时行情</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f0f2f5; margin: 0; padding: 12px; }
-        
-        /* 卡片容器优化 */
-        .card { 
-            background: white; 
-            border-radius: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
-            margin-bottom: 20px; 
-            padding: 16px; 
-            overflow: hidden;
-        }
-        
-        h2 { 
-            font-size: 16px; 
-            margin: 0 0 12px 0; 
-            color: #1a73e8; 
-            border-left: 4px solid #1a73e8; 
-            padding-left: 10px; 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        /* 专门突出 P/E 的提示 */
-        .highlight-tip {
-            font-size: 13px;
-            color: #d93025;
-            background: #fce8e6;
-            padding: 8px 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .chart-box { height: 400px; width: 100%; }
-        
-        /* 按钮样式 */
-        .btn-link {
-            display: block;
-            text-align: center;
-            background: #1a73e8;
-            color: white;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 15px;
-        }
+        body { font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 20px; background-color: #f0f2f5; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
+        h2 { margin-top: 0; color: #333; font-size: 18px; border-left: 4px solid #0052ff; padding-left: 10px; }
+        .chart-box { height: 500px; width: 100%; }
+        .btn { display: block; text-align: center; background: #0052ff; color: white; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
-
-    <div class="card">
-        <h2>📈 纳斯达克综合指数 (实时行情)</h2>
-        <div id="chart_index" class="chart-box"></div>
-    </div>
-
-    <div class="card">
-        <h2>📊 纳斯达克 100 核心估值</h2>
-        
-        <div class="highlight-tip">
-            ✅ <strong>已修复：</strong> 数据源已切换为 <strong>QQQ (ETF)</strong>。<br>
-            请在下方列表中查看 <strong>“市盈率 (P/E Ratio)”</strong> 这一行，不再是空的了。
+    <div class="container">
+        <div class="card">
+            <h2>📉 纳斯达克综合指数 (实时走势)</h2>
+            <div id="index_chart" class="chart-box"></div>
         </div>
 
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
-            {
-                "colorTheme": "light",
-                "isTransparent": true,
-                "displayMode": "regular",
-                "width": "100%",
-                "height": "400",
-                "symbol": "NASDAQ:QQQ",  
-                "locale": "zh_CN"
-            }
-            </script>
+        <div class="card">
+            <h2>📊 纳斯达克市盈率 (P/E)</h2>
+            <p style="color: #666; font-size: 14px;">
+                * 注：市盈率历史曲线属于付费高级数据，无法在免费网页中直接绘制。
+            </p>
+            <a href="https://www.longtermtrends.net/nasdaq-100-pe-ratio/" target="_blank" class="btn">
+                👉 点击此处查看市盈率历史曲线 (专业版)
+            </a>
         </div>
-
-        <a href="https://www.longtermtrends.net/nasdaq-100-pe-ratio/" target="_blank" class="btn-link">
-            🚀 点击这里查看 P/E 历史走势图 (高清曲线)
-        </a>
     </div>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
-        // 渲染上方的 K 线图
         new TradingView.widget({
             "autosize": true,
             "symbol": "NASDAQ:IXIC",
@@ -104,7 +43,7 @@
             "locale": "zh_CN",
             "enable_publishing": false,
             "hide_top_toolbar": false,
-            "container_id": "chart_index"
+            "container_id": "index_chart"
         });
     </script>
 </body>
